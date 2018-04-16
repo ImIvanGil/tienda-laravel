@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Product;
 
 class ProductsController extends Controller
 {
@@ -13,7 +14,9 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::paginate(10);
+
+        return view('products.index', ['products' => $products]);
     }
 
     /**
@@ -23,7 +26,8 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        return view('products.create');
+        $product = new Product;
+        return view('products.create', ['product' => $product]);
     }
 
     /**
@@ -34,7 +38,17 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $options = [
+            'title' => $request->title,
+            'description' => $request->description,
+            'price' => $request->price,
+        ];
+
+        if (Product::create($options)) {
+            return redirect('/');
+        }else{
+            return view('products.create');
+        }
     }
 
     /**
@@ -56,7 +70,8 @@ class ProductsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $product = Product::find($id);
+        return view('products.edit',['product' => $product]);
     }
 
     /**
@@ -68,7 +83,16 @@ class ProductsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $product = Product::find($id);
+
+        $product->fill($request->all());
+
+        if ($product->save()) {
+            return redirect('/');
+        } else {
+            return view('products.edit',['product' => $product]);
+        }
+
     }
 
     /**
