@@ -12,6 +12,7 @@
 */
 
 Route::get('/', function () {
+    Session::remove('shopping_cart_id');
     return view('welcome');
 });
 
@@ -19,6 +20,8 @@ Auth::routes();
 
 Route::get('/carrito', 'ShoppingCartController@show')->name('shopping_cart.show');
 Route::get('/carrito/productos', 'ShoppingCartController@products')->name('shopping_cart.products');
+Route::get('/pagar', 'PaymentController@pay')->name('payments.pay');
+Route::get('/pagar/completar', 'PaymentController@execute')->name('payments.execute');
 
 Route::resource('productos', 'ProductsController');
 

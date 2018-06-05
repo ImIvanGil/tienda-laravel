@@ -19,7 +19,8 @@ class ProductsCollection extends ResourceCollection
                 return [
                     'title'         => $element->title,
                     'id'            => $element->id,
-                    'humanPrice'    => '$' . ($element->price * 100),
+                    'humanPrice'    => '$' . ($element->price) / 100,
+                    'numberPrice'    => $element->price ,
                     'price'         => $element->price,
                     'description'   => $element->description,
                     'image'         => $element->image_url
